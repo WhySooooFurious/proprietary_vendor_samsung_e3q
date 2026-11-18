@@ -192,3 +192,11 @@ PRODUCT_COPY_FILES += \
     vendor/samsung/e3q/proprietary/vendor/lib64/bm4a73v08s12n60.bin:$(TARGET_COPY_OUT_VENDOR)/lib64/bm4a73v08s12n60.bin \
     vendor/samsung/e3q/proprietary/vendor/lib64/bm4a73v08s12n61.bin:$(TARGET_COPY_OUT_VENDOR)/lib64/bm4a73v08s12n61.bin \
     vendor/samsung/e3q/proprietary/vendor/lib64/bm4a73v08s12n62.bin:$(TARGET_COPY_OUT_VENDOR)/lib64/bm4a73v08s12n62.bin
+# Samsung proprietary audio stack: prebuilts from the reference ROM vendor.
+# Installed after soong (cp -f) so they take precedence over the
+# source-built CAF audio modules at the same paths.
+out/target/product/e3q/vendor.img: out/target/product/e3q/.samsung_audio_done
+out/target/product/e3q/.samsung_audio_done:
+	@mkdir -p out/target/product/e3q/vendor
+	@(cd vendor/samsung/e3q/proprietary-audio && find . -type f | while read f; do mkdir -p "out/target/product/e3q/vendor/$${f%/*}"; cp -f "$$f" "out/target/product/e3q/vendor/$$f"; done)
+	@touch $@
