@@ -4,6 +4,5 @@
 
 soong_namespace {
     imports: [
-        "vendor/samsung/sm8650-common",
     ],
 }
